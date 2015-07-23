@@ -62,8 +62,8 @@ class PowerShell
     if (is_array($stdOut))
     {
       $stdOut = implode("\r\n", $stdOut);
-      if (trim($stdOut[count($stdOut) - 1]) == "True") $stdOut = true;
-      if (trim($stdOut[count($stdOut) - 1]) == "False") $stdOut = false;
+      if (is_array($stdOut) && trim($stdOut[count($stdOut) - 1]) == "True") $stdOut = true;
+      if (is_array($stdOut) && trim($stdOut[count($stdOut) - 1]) == "False") $stdOut = false;
     }
 
     $jsonArr = array();
