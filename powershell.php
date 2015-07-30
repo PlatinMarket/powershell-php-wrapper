@@ -58,9 +58,12 @@ class PowerShell
   {
     if (!is_string($command) || (!is_array($args) && !is_string($args))) return null;
     if (is_array($args) && $args = $this->parseArguments($args)) if (!empty($args)) $command = $command . ' ' . $args;
-    $command = $this->_psExec . ' "' . $command . '"';
+    //$command = $this->_psExec . ' "' . $command . '"';
 
-    $c = new Command($command);
+    $c = new Command();
+    $c->setCommand($this->_psExec);
+    $c->execute();
+    $c->setCommand($command);
     if ($c->execute())
       $stdOut = $c->getOutput();
     else
