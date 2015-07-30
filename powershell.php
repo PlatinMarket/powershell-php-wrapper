@@ -29,13 +29,13 @@ class PowerShell
     if ($psPath)
       $this->_psExec = $psPath;
     else
-      $this->_psExec = self::ENV('SYSTEMROOT') . DIRECTORY_SEPARATOR . 'system32' . DIRECTORY_SEPARATOR . 'WindowsPowerShell' . DIRECTORY_SEPARATOR . 'v1.0' . DIRECTORY_SEPARATOR . 'powershell.exe';
+      $this->_psExec = 'powershell.exe';
 
     // Set Ps Module Dir
     $this->_psModuleDir = self::ENV('PSMODULEPATH');
 
     // Validation
-    if (!file_exists($this->_psExec)) throw new Exception('PowerShell executable not found');
+    // if (!file_exists($this->_psExec)) throw new Exception('PowerShell executable not found');
   }
 
   // Parse argument array. 'key => value' or 'numeric => value'
@@ -61,7 +61,7 @@ class PowerShell
 
     $c = new Command();
     $c->setCommand($this->_psExec);
-    $c->setArgs($command);
+    $c->addArg($command);
     if ($c->execute())
       $stdOut = $c->getOutput();
     else
