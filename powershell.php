@@ -1,5 +1,9 @@
 <?php
 
+require_once "vendor/autoload.php";
+
+use mikehaertl\shellcommand\Command;
+
 class PowerShell
 {
   // PowerShell Executable
@@ -54,17 +58,16 @@ class PowerShell
   {
     if (!is_string($command) || (!is_array($args) && !is_string($args))) return null;
     if (is_array($args) && $args = $this->parseArguments($args)) if (!empty($args)) $command = $command . ' ' . $args;
-    $command = "\"" . $this->_psExec . "\"" . " \"" . $command . "\"";
+    $command = $this->_psExec . ' "' . $command . '"';
 
-    exec($command, $stdOut, $error);
-    if ($error) throw new Exception("Error occured when executing command.");
+    $c = new Command($command);
+    if ($c->execute())
+      $stdOut = $c->getOutput();
+    else
+      throw new Exception($c->getError(), $c->getExitCode());
 
-    if (is_array($stdOut))
-    {
-      $stdOut = implode("\r\n", $stdOut);
-      if (is_array($stdOut) && trim($stdOut[count($stdOut) - 1]) == "True") $stdOut = true;
-      if (is_array($stdOut) && trim($stdOut[count($stdOut) - 1]) == "False") $stdOut = false;
-    }
+    if (is_string($stdOut) && trim($stdOut) == "True") $stdOut = true;
+    if (is_string($stdOut) && trim($stdOut) == "False") $stdOut = false;
 
     $jsonArr = array();
     $jsonArr = json_decode($stdOut, true);

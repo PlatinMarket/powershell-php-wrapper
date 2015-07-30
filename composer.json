@@ -1,0 +1,12 @@
+{
+    "name": "root/powershell-php-wrapper",
+    "require": {
+        "mikehaertl/php-shellcommand": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "Burak Doğan",
+            "email": "bdogan85@gmail.com"
+        }
+    ]
+}
